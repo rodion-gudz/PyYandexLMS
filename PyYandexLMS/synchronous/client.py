@@ -4,6 +4,7 @@ import pickle
 from requests import Session
 
 from PyYandexLMS.errors import AuthError
+from PyYandexLMS.models import User
 
 
 class Client(Session):
@@ -28,3 +29,21 @@ class Client(Session):
     def check_authorized(self):
         return self.get("https://api.passport.yandex.ru/all_accounts").text != "{}"
 
+    def get_user(
+        self,
+        with_courses_summary: bool = True,
+        with_expelled: bool = True,
+        with_children: bool = True,
+        with_parents: bool = True,
+    ) -> User:
+        return User.parse_obj(
+            self.get(
+                "https://lyceum.yandex.ru/api/profile",
+                params={
+                    "withCoursesSummary": str(with_courses_summary).lower(),
+                    "withExpelled": str(with_expelled).lower(),
+                    "withChildren": str(with_children).lower(),
+                    "withParents": str(with_parents).lower(),
+                },
+            ).json()
+        )
