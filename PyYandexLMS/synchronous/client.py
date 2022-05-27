@@ -9,6 +9,7 @@ from PyYandexLMS.models.lesson import BaseLesson, Lesson
 from PyYandexLMS.models.materials import BaseMaterial, Material
 from PyYandexLMS.models.task import TaskType, Task, Solution
 from PyYandexLMS.models.solution import Solution as DetailedSolution
+from PyYandexLMS.models.notifications import Notifications
 from PyYandexLMS.models.user import User
 
 
@@ -152,5 +153,15 @@ class Client(Session):
         return DetailedSolution.parse_obj(
             self.get(
                 f"https://lyceum.yandex.ru/api/student/solutions/{solution_id}"
+
+    def get_notifications(self, is_read=False) -> Notifications:
+        """Возвращает список уведомлений пользователя
+
+        :param is_read: Показать уведомления, которые уже прочитаны
+        """
+        return Notifications.parse_obj(
+            self.get(
+                "https://lyceum.yandex.ru/api/notifications",
+                params={"isRead": str(is_read).lower()},
             ).json()
         )
