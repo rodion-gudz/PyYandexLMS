@@ -9,7 +9,7 @@ password = getenv("PASSWORD")
 
 async def main():
     client = Client(login, password)
-    print(await client.check_authorized())
+    # In development
 
 
 if __name__ == "__main__":
