@@ -4,6 +4,7 @@ import pickle
 from requests import Session
 
 from PyYandexLMS.errors import AuthError
+from PyYandexLMS.models.notifications import Notifications
 from PyYandexLMS.models.user import User
 
 
@@ -54,5 +55,17 @@ class Client(Session):
                     "withChildren": str(with_children).lower(),
                     "withParents": str(with_parents).lower(),
                 },
+            ).json()
+        )
+
+    def get_notifications(self, is_read=False) -> Notifications:
+        """Возвращает список уведомлений пользователя
+
+        :param is_read: Показать уведомления, которые уже прочитаны
+        """
+        return Notifications.parse_obj(
+            self.get(
+                "https://lyceum.yandex.ru/api/notifications",
+                params={"isRead": str(is_read).lower()},
             ).json()
         )
