@@ -7,9 +7,9 @@ from requests import Session
 from PyYandexLMS.errors import AuthError
 from PyYandexLMS.models.lesson import BaseLesson, Lesson
 from PyYandexLMS.models.materials import BaseMaterial, Material
-from PyYandexLMS.models.task import TaskType, Task, Solution
-from PyYandexLMS.models.solution import Solution as DetailedSolution
 from PyYandexLMS.models.notifications import Notifications
+from PyYandexLMS.models.solution import Solution as DetailedSolution
+from PyYandexLMS.models.task import Solution, Task, TaskType
 from PyYandexLMS.models.user import User
 
 
