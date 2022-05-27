@@ -5,7 +5,7 @@ from typing import List
 from requests import Session
 
 from PyYandexLMS.errors import AuthError
-from PyYandexLMS.models.course import BaseLesson
+from PyYandexLMS.models.lesson import BaseLesson, Lesson
 from PyYandexLMS.models.user import User
 
 
@@ -71,3 +71,18 @@ class Client(Session):
             params={"courseId": course_id, "groupId": group_id},
         ).json()
         return [BaseLesson.parse_obj(lesson) for lesson in lessons]
+
+    def get_lesson(self, lesson_id, course_id, group_id) -> Lesson:
+        """
+        Возвращает информацию о уроке.
+
+        :param lesson_id: Идентификатор урока
+        :param course_id: Идентификатор курса
+        :param group_id: Идентификатор группы
+        """
+        return Lesson.parse_obj(
+            self.get(
+                f"https://lyceum.yandex.ru/api/student/lessons/{lesson_id}",
+                params={"courseId": course_id, "groupId": group_id},
+            ).json()
+        )
