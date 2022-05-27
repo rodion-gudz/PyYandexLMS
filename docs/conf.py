@@ -1,8 +1,8 @@
-project = 'PyYandexLMS'
-copyright = '2022, lav.'
-author = 'lav.'
+project = "PyYandexLMS"
+copyright = "2022, lav."
+author = "lav."
 
-release = '0.1.0'
+release = "0.1.0"
 
 extensions = [
     "sphinx.ext.todo",
@@ -25,7 +25,7 @@ html_theme_options = {}
 html_css_files = [
     "stylesheets/extra.css",
 ]
-highlight_language = 'python3'
+highlight_language = "python3"
 
-language = 'ru'
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+language = "ru"
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
