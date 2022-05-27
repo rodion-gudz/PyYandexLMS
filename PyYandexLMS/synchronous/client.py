@@ -4,7 +4,7 @@ import pickle
 from requests import Session
 
 from PyYandexLMS.errors import AuthError
-from PyYandexLMS.models import User
+from PyYandexLMS.models.user import User
 
 
 class Client(Session):
