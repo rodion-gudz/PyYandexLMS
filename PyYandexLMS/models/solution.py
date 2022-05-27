@@ -1,8 +1,8 @@
 from datetime import datetime
-from typing import Union, Optional, List
+from typing import List, Optional, Union
 
 from PyYandexLMS.models.base import BaseModel
-from PyYandexLMS.models.task import Status, File, Submission, Task, BaseTask
+from PyYandexLMS.models.task import BaseTask, File, Status, Submission, Task
 from PyYandexLMS.models.user import BaseUser
 
 
