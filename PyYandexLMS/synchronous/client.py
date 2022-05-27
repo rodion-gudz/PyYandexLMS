@@ -6,7 +6,9 @@ from requests import Session
 
 from PyYandexLMS.errors import AuthError
 from PyYandexLMS.models.lesson import BaseLesson, Lesson
-from PyYandexLMS.models.task import TaskType, Task
+from PyYandexLMS.models.materials import BaseMaterial, Material
+from PyYandexLMS.models.task import TaskType, Task, Solution
+from PyYandexLMS.models.solution import Solution as DetailedSolution
 from PyYandexLMS.models.user import User
 
 
@@ -113,5 +115,42 @@ class Client(Session):
             self.get(
                 f"https://lyceum.yandex.ru/api/student/tasks/{task_id}",
                 params={"groupId": group_id},
+            ).json()
+        )
+
+    def get_materials(self, lesson_id) -> List[BaseMaterial]:
+        """
+        Возвращает список материалов в уроке.
+
+        :param lesson_id: Идентификатор урока
+        """
+        materials = self.get(
+            "https://lyceum.yandex.ru/api/materials/", params={"lessonId": lesson_id}
+        ).json()
+        return [BaseMaterial.parse_obj(material) for material in materials]
+
+    def get_material(self, material_id, group_id, lesson_id) -> List[Material]:
+        """
+        Возвращает список материалов в уроке.
+
+        :param material_id: Идентификатор материала
+        :param lesson_id: Идентификатор урока
+        :param group_id: Идентификатор группы
+        """
+        materials = self.get(
+            f"https://lyceum.yandex.ru/api/student/materials/{material_id}",
+            params={"groupId": group_id, "lessonId": lesson_id},
+        ).json()
+        return [Material.parse_obj(material) for material in materials]
+
+    def get_solution(self, solution_id) -> DetailedSolution:
+        """
+        Возвращает информацию о решении.
+
+        :param solution_id: Идентификатор решения
+        """
+        return DetailedSolution.parse_obj(
+            self.get(
+                f"https://lyceum.yandex.ru/api/student/solutions/{solution_id}"
             ).json()
         )

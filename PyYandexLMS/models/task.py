@@ -34,7 +34,7 @@ class BaseTask(BaseModel):
     score_max: int
     lesson: BaseLesson
     solution: Optional[Solution]
-    deadline: datetime
+    deadline: Union[datetime, None]
     is_contest_integrated: bool
     has_manual_check: bool
 
