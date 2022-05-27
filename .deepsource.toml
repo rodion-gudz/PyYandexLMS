@@ -12,9 +12,5 @@ name = "black"
 enabled = true
 
 [[transformers]]
-name = "yapf"
-enabled = true
-
-[[transformers]]
 name = "isort"
 enabled = true
