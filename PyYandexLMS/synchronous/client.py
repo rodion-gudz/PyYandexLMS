@@ -6,6 +6,7 @@ from requests import Session
 
 from PyYandexLMS.errors import AuthError
 from PyYandexLMS.models.lesson import BaseLesson, Lesson
+from PyYandexLMS.models.task import TaskType
 from PyYandexLMS.models.user import User
 
 
@@ -86,3 +87,17 @@ class Client(Session):
                 params={"courseId": course_id, "groupId": group_id},
             ).json()
         )
+
+    def get_tasks(self, lesson_id, course_id, group_id) -> List[TaskType]:
+        """
+        Возвращает список заданий в уроке.
+
+        :param lesson_id: Идентификатор урока
+        :param course_id: Идентификатор курса
+        :param group_id: Идентификатор группы
+        """
+        tasks = self.get(
+            "https://lyceum.yandex.ru/api/student/lessonTasks",
+            params={"courseId": course_id, "groupId": group_id, "lessonId": lesson_id},
+        ).json()
+        return [TaskType.parse_obj(task_type) for task_type in tasks]
