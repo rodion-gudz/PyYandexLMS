@@ -9,7 +9,7 @@ from PyYandexLMS.models.lesson import BaseLesson, Lesson
 from PyYandexLMS.models.materials import BaseMaterial, Material
 from PyYandexLMS.models.notifications import Notifications
 from PyYandexLMS.models.solution import Solution as DetailedSolution
-from PyYandexLMS.models.task import TaskType, Task
+from PyYandexLMS.models.task import Task, TaskType
 from PyYandexLMS.models.user import User
 
 
