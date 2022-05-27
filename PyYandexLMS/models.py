@@ -1,5 +1,5 @@
-from datetime import date, time, datetime
-from typing import List, Union, Optional
+from datetime import date, datetime, time
+from typing import List, Optional, Union
 
 from pydantic import BaseModel as PydanticBaseModel
 

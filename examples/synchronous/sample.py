@@ -11,7 +11,9 @@ def main():
     user = client.get_user()
     print(f"Имя: {user.profile.display_name}")
     print(f"Дата регистрации в LMS: {user.profile.date_joined.strftime('%d.%m.%Y')}")
-    print(f"Курсы: {', '.join(course.title for course in user.courses_summary.student)}")
+    print(
+        f"Курсы: {', '.join(course.title for course in user.courses_summary.student)}"
+    )
 
 
 if __name__ == "__main__":
