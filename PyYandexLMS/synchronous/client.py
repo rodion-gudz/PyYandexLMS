@@ -9,7 +9,7 @@ from PyYandexLMS.models.lesson import BaseLesson, Lesson
 from PyYandexLMS.models.materials import BaseMaterial, Material
 from PyYandexLMS.models.notifications import Notifications
 from PyYandexLMS.models.solution import Solution as DetailedSolution
-from PyYandexLMS.models.task import TaskType, Task
+from PyYandexLMS.models.task import Task, TaskType
 from PyYandexLMS.models.user import User
 
 
@@ -19,11 +19,11 @@ class Client(Session):
         session_name = session_name or f"{login}.session"
         if not os.path.exists(session_name):
             if (
-                    self.post(
-                        "https://passport.yandex.ru/passport?mode=auth",
-                        data={"login": login, "passwd": password},
-                    ).url
-                    != "https://passport.yandex.ru/profile"
+                self.post(
+                    "https://passport.yandex.ru/passport?mode=auth",
+                    data={"login": login, "passwd": password},
+                ).url
+                != "https://passport.yandex.ru/profile"
             ):
                 raise AuthError("Ошибка авторизации (Неверные данные или включен 2FA)")
             with open(session_name, "wb") as f:
@@ -37,11 +37,11 @@ class Client(Session):
         return self.get("https://api.passport.yandex.ru/all_accounts").text != "{}"
 
     def get_user(
-            self,
-            with_courses_summary: bool = True,
-            with_expelled: bool = True,
-            with_children: bool = True,
-            with_parents: bool = True,
+        self,
+        with_courses_summary: bool = True,
+        with_expelled: bool = True,
+        with_children: bool = True,
+        with_parents: bool = True,
     ) -> User:
         """
         Возвращает информацию о пользователе в виде объекта User.
