@@ -1,14 +1,7 @@
 from datetime import date, datetime, time
 from typing import List, Optional, Union
 
-from pydantic import BaseModel as PydanticBaseModel
-
-from PyYandexLMS.utils.validation import to_camel_case
-
-
-class BaseModel(PydanticBaseModel):
-    class Config:
-        alias_generator = to_camel_case
+from PyYandexLMS.models.base import BaseModel
 
 
 class Group(BaseModel):
@@ -43,7 +36,7 @@ class Invite(BaseModel):
     uses_limit: int
 
 
-class Teacher(BaseModel):
+class BaseUser(BaseModel):
     id: int
     uid: int
     username: str
@@ -63,8 +56,8 @@ class Placement(BaseModel):
 class Course(BaseModel):
     id: int
     title: str
-    teacher: Union[Teacher, None]
-    teachers_list: Union[List[Teacher], None]
+    teacher: Union[BaseUser, None]
+    teachers_list: Union[List[BaseUser], None]
     group: Group
     rating: float
     bonus_score: float
@@ -87,18 +80,10 @@ class Course(BaseModel):
 
 class CoursesSummary(BaseModel):
     student: Union[List[Course], None]
-    teacher: Union[List[Teacher], None]
+    teacher: Union[List[BaseUser], None]
 
 
-class Profile(BaseModel):
-    id: int
-    uid: str
-    username: str
-    last_name: str
-    first_name: str
-    middle_name: str
-    display_name: str
-    avatar: str
+class BaseProfile(BaseUser):
     timezone: str
     phone: str
     email: str
@@ -115,15 +100,19 @@ class Profile(BaseModel):
     programming_experience: str
     school: str
     school_class: str
-    children: Union[List["Profile"], List[int]]
-    parents: Union[List["Profile"], None]
-    gender: str
-    groups: Optional[List[Group]]
-    permissions: Optional[List[str]]
-    managed_cities: Optional[List[str]]
-    managed_venues: Optional[List[str]]
-    city_to_managed_venues: Optional[List[str]]
-    invite: Optional[Invite]
+    children: Union[List[int]]
+    parents: Union[List[int]]
+
+
+class Profile(BaseProfile):
+    children: Union[List[BaseProfile], None]
+    parents: Union[List[BaseProfile], None]
+    groups: List[Group]
+    permissions: List[str]
+    managed_cities: List[str]
+    managed_venues: List[str]
+    city_to_managed_venues: List[str]
+    invite: Invite
 
 
 class User(BaseModel):
