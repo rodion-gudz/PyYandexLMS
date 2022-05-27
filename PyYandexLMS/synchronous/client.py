@@ -27,6 +27,7 @@ class Client(Session):
                 self.cookies = pickle.load(f)
 
     def check_authorized(self):
+        """Проверка авторизации пользователя"""
         return self.get("https://api.passport.yandex.ru/all_accounts").text != "{}"
 
     def get_user(
@@ -36,6 +37,14 @@ class Client(Session):
         with_children: bool = True,
         with_parents: bool = True,
     ) -> User:
+        """
+        Возвращает информацию о пользователе в виде объекта User.
+
+        :param with_courses_summary: Получить информацию о курсах пользователя
+        :param with_expelled: Включить информацию о законченных курсах
+        :param with_children: Показать информацию о детях (Если пользователь - родитель)
+        :param with_parents: Показать информацию о родителях (Если пользователь - ребенок)
+        """
         return User.parse_obj(
             self.get(
                 "https://lyceum.yandex.ru/api/profile",
