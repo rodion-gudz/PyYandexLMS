@@ -1,9 +1,11 @@
 import os
 import pickle
+from typing import List
 
 from requests import Session
 
 from PyYandexLMS.errors import AuthError
+from PyYandexLMS.models.course import BaseLesson
 from PyYandexLMS.models.user import User
 
 
@@ -56,3 +58,16 @@ class Client(Session):
                 },
             ).json()
         )
+
+    def get_lessons(self, course_id, group_id) -> List[BaseLesson]:
+        """
+        Возвращает список уроков в курсе.
+
+        :param course_id: Идентификатор курса
+        :param group_id: Идентификатор группы
+        """
+        lessons = self.get(
+            "https://lyceum.yandex.ru/api/student/lessons/",
+            params={"courseId": course_id, "groupId": group_id},
+        ).json()
+        return [BaseLesson.parse_obj(lesson) for lesson in lessons]
