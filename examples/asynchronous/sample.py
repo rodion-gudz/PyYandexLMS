@@ -1,7 +1,7 @@
 import asyncio
 from os import getenv
 
-from PyYandexLMS.asynchronous.client import Client
+from PyYandexLMS.asynchronous import Client
 
 login = getenv("LOGIN")
 password = getenv("PASSWORD")

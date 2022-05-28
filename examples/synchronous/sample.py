@@ -1,6 +1,6 @@
 from os import getenv
 
-from PyYandexLMS.synchronous.client import Client
+from PyYandexLMS.synchronous import Client
 
 login = getenv("LOGIN")
 password = getenv("PASSWORD")
