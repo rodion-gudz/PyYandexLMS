@@ -132,7 +132,7 @@ class Client(Session):
 
     def get_material(self, material_id, group_id, lesson_id) -> List[Material]:
         """
-        Возвращает список материалов в уроке.
+        Возвращает информацию о материале по его идентификатору.
 
         :param material_id: Идентификатор материала
         :param lesson_id: Идентификатор урока
