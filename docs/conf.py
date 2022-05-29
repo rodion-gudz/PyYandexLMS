@@ -18,6 +18,7 @@ extensions = [
 
 templates_path = ["_templates"]
 html_theme = "furo"
+html_logo = "_static/logo.png"
 html_static_path = ["_static"]
 todo_include_todos = True
 pygments_style = "sphinx"
