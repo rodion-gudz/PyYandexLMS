@@ -13,10 +13,12 @@ extensions = [
     "sphinx-prompt",
     "sphinx_substitution_extensions",
     "sphinx_copybutton",
+    'm2r2',
 ]
 
 templates_path = ["_templates"]
 html_theme = "furo"
+html_logo = "_static/logo.png"
 html_static_path = ["_static"]
 todo_include_todos = True
 pygments_style = "sphinx"
@@ -29,3 +31,5 @@ highlight_language = "python3"
 
 language = "ru"
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+
+source_suffix = ['.rst', '.md']
