@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List, Optional, Union
 
 from PyYandexLMS.models.base import BaseModel, BaseSolution
-from PyYandexLMS.models.task import File, Submission, BaseTask
+from PyYandexLMS.models.task import BaseTask, File, Submission
 from PyYandexLMS.models.user import BaseUser
 
 

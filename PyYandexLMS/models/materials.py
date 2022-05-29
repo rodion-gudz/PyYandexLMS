@@ -1,4 +1,4 @@
-from PyYandexLMS.models.base import BaseModel, BaseMaterial
+from PyYandexLMS.models.base import BaseMaterial, BaseModel
 from PyYandexLMS.models.lesson import BaseLesson
 
 
