@@ -13,7 +13,7 @@ extensions = [
     "sphinx-prompt",
     "sphinx_substitution_extensions",
     "sphinx_copybutton",
-    'm2r',
+    'm2r2',
 ]
 
 templates_path = ["_templates"]

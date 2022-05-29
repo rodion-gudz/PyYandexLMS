@@ -255,8 +255,8 @@ six = "*"
 tornado = {version = "*", markers = "python_version > \"2.7\""}
 
 [[package]]
-name = "m2r"
-version = "0.2.1"
+name = "m2r2"
+version = "0.3.2"
 description = "Markdown and reStructuredText in a single file."
 category = "main"
 optional = true
@@ -264,7 +264,7 @@ python-versions = "*"
 
 [package.dependencies]
 docutils = "*"
-mistune = "*"
+mistune = "0.8.4"
 
 [[package]]
 name = "markdown"
@@ -301,8 +301,8 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "mistune"
-version = "2.0.2"
-description = "A sane Markdown parser with useful plugins and renderers"
+version = "0.8.4"
+description = "The fastest markdown parser in pure Python"
 category = "main"
 optional = true
 python-versions = "*"
@@ -708,12 +708,12 @@ docs = ["sphinx", "jaraco.packaging (>=9)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
 
 [extras]
-docs = ["Sphinx", "sphinx-intl", "sphinx-autobuild", "sphinx-copybutton", "furo", "sphinx-prompt", "Sphinx-Substitution-Extensions", "towncrier", "pygments", "pymdown-extensions", "markdown-include", "m2r"]
+docs = ["Sphinx", "sphinx-intl", "sphinx-autobuild", "sphinx-copybutton", "furo", "sphinx-prompt", "Sphinx-Substitution-Extensions", "towncrier", "pygments", "pymdown-extensions", "markdown-include", "m2r2"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "66424a252df09ac402cb6f3127add5d809b8a38215878870914f528a5b2400cd"
+content-hash = "d8494072944e9c94ded9a3927625085037419320c4cf05e9259fce5035ab7c8f"
 
 [metadata.files]
 aiohttp = [
@@ -950,8 +950,9 @@ jinja2 = [
 livereload = [
     {file = "livereload-2.6.3.tar.gz", hash = "sha256:776f2f865e59fde56490a56bcc6773b6917366bce0c267c60ee8aaf1a0959869"},
 ]
-m2r = [
-    {file = "m2r-0.2.1.tar.gz", hash = "sha256:bf90bad66cda1164b17e5ba4a037806d2443f2a4d5ddc9f6a5554a0322aaed99"},
+m2r2 = [
+    {file = "m2r2-0.3.2-py3-none-any.whl", hash = "sha256:d3684086b61b4bebe2307f15189495360f05a123c9bda2a66462649b7ca236aa"},
+    {file = "m2r2-0.3.2.tar.gz", hash = "sha256:ccd95b052dcd1ac7442ecb3111262b2001c10e4119b459c34c93ac7a5c2c7868"},
 ]
 markdown = [
     {file = "Markdown-3.3.7-py3-none-any.whl", hash = "sha256:f5da449a6e1c989a4cea2631aa8ee67caa5a2ef855d551c88f9e309f4634c621"},
@@ -1003,8 +1004,8 @@ markupsafe = [
     {file = "MarkupSafe-2.1.1.tar.gz", hash = "sha256:7f91197cc9e48f989d12e4e6fbc46495c446636dfc81b9ccf50bb0ec74b91d4b"},
 ]
 mistune = [
-    {file = "mistune-2.0.2-py2.py3-none-any.whl", hash = "sha256:6bab6c6abd711c4604206c7d8cad5cd48b28f072b4bb75797d74146ba393a049"},
-    {file = "mistune-2.0.2.tar.gz", hash = "sha256:6fc88c3cb49dba8b16687b41725e661cf85784c12e8974a29b9d336dd596c3a1"},
+    {file = "mistune-0.8.4-py2.py3-none-any.whl", hash = "sha256:88a1051873018da288eee8538d476dffe1262495144b33ecb586c4ab266bb8d4"},
+    {file = "mistune-0.8.4.tar.gz", hash = "sha256:59a3429db53c50b5c6bcc8a07f8848cb00d7dc8bdb431a4ab41920d201d4756e"},
 ]
 multidict = [
     {file = "multidict-6.0.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:0b9e95a740109c6047602f4db4da9949e6c5945cefbad34a1299775ddc9a62e2"},
