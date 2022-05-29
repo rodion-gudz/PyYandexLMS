@@ -14,6 +14,7 @@ def main():
     print(
         f"Курсы: {', '.join(course.title for course in user.courses_summary.student)}"
     )
+    courses = user.courses_summary.student
 
 
 if __name__ == "__main__":

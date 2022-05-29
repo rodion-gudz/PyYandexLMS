@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import List, Union
 
-from PyYandexLMS.models.base import BaseModel, Group
+from PyYandexLMS.models.base import BaseModel, BaseUser, Group
 from PyYandexLMS.models.course import CoursesSummary
 
 
@@ -9,18 +9,6 @@ class Invite(BaseModel):
     url: str
     uses_count: int
     uses_limit: int
-
-
-class BaseUser(BaseModel):
-    id: int
-    uid: int
-    username: str
-    last_name: str
-    first_name: str
-    middle_name: str
-    display_name: str
-    avatar: str
-    gender: str
 
 
 class Placement(BaseModel):

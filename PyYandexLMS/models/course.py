@@ -1,8 +1,7 @@
 from datetime import date, time
 from typing import List, Optional, Union
 
-from PyYandexLMS.models.base import BaseModel, Group
-from PyYandexLMS.models.user import BaseUser
+from PyYandexLMS.models.base import BaseModel, BaseUser, Group
 
 
 class SchedulePlanItem(BaseModel):

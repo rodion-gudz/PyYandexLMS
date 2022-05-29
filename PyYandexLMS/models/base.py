@@ -21,6 +21,18 @@ class Group(BaseModel):
     name: str
 
 
+class BaseUser(BaseModel):
+    id: int
+    uid: int
+    username: str
+    last_name: str
+    first_name: str
+    middle_name: str
+    display_name: str
+    avatar: str
+    gender: str
+
+
 class BaseSolution(BaseModel):
     id: int
     score: int
