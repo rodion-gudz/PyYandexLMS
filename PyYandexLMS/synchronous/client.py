@@ -17,6 +17,13 @@ from PyYandexLMS.models.user import UserInformation
 
 class Client(Session):
     def __init__(self, login: str, password: str, session_name: str = None):
+        """
+        Сессия Yandex Lyceum API. Основана на Requests session.
+
+        :param login: Почта Yandex
+        :param password: Пароль аккаунта
+        :param session_name: Имя файла для сохранения сессии. По умолчанию {login}.session
+        """
         super().__init__()
         session_name = session_name or f"{login}.session"
         if not os.path.exists(session_name):
