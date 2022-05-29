@@ -55,10 +55,10 @@ class Client(Session):
             self.get(
                 "https://lyceum.yandex.ru/api/profile",
                 params={
-                    "withCoursesSummary": str(with_courses_summary).lower(),
-                    "withExpelled": str(with_expelled).lower(),
-                    "withChildren": str(with_children).lower(),
-                    "withParents": str(with_parents).lower(),
+                    "withCoursesSummary": with_courses_summary,
+                    "withExpelled": with_expelled,
+                    "withChildren": with_children,
+                    "withParents": with_parents,
                 },
             ).json()
         )
@@ -165,6 +165,6 @@ class Client(Session):
         return NotificationInformation.parse_obj(
             self.get(
                 "https://lyceum.yandex.ru/api/notifications",
-                params={"isRead": str(is_read).lower()},
+                params={"isRead": is_read},
             ).json()
         )
