@@ -13,7 +13,7 @@ extensions = [
     "sphinx-prompt",
     "sphinx_substitution_extensions",
     "sphinx_copybutton",
-    'm2r2',
+    "m2r2",
 ]
 
 templates_path = ["_templates"]
@@ -31,4 +31,4 @@ highlight_language = "python3"
 language = "ru"
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
-source_suffix = ['.rst', '.md']
+source_suffix = [".rst", ".md"]
