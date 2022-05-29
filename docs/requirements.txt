@@ -1,3 +1,4 @@
 sphinx-intl
 typing-extensions
 Sphinx-Substitution-Extensions
+m2r
