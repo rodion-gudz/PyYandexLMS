@@ -1,6 +1,3 @@
-from datetime import datetime
-from typing import Optional, Union
-
 from PyYandexLMS.models.base import BaseModel
 from PyYandexLMS.models.lesson import BaseLesson
 
