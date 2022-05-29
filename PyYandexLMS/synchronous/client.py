@@ -6,11 +6,11 @@ from requests import Session
 
 from PyYandexLMS.errors import AuthError
 from PyYandexLMS.models.lesson import BaseLesson, Lesson
-from PyYandexLMS.models.materials import BaseMaterial, Material
-from PyYandexLMS.models.notifications import Notifications
-from PyYandexLMS.models.solution import Solution as DetailedSolution
-from PyYandexLMS.models.task import Task, TaskType
-from PyYandexLMS.models.user import User
+from PyYandexLMS.models.materials import BaseMaterial, MaterialInformation
+from PyYandexLMS.models.notification import NotificationInformation
+from PyYandexLMS.models.solution import SolutionInformation
+from PyYandexLMS.models.task import TaskType, Task
+from PyYandexLMS.models.user import UserInformation
 
 
 class Client(Session):
@@ -42,16 +42,16 @@ class Client(Session):
         with_expelled: bool = True,
         with_children: bool = True,
         with_parents: bool = True,
-    ) -> User:
+    ) -> UserInformation:
         """
-        Возвращает информацию о пользователе в виде объекта User.
+        Возвращает информацию о пользователе в виде объекта UserInformation.
 
         :param with_courses_summary: Получить информацию о курсах пользователя
         :param with_expelled: Включить информацию о законченных курсах
         :param with_children: Показать информацию о детях (Если пользователь - родитель)
         :param with_parents: Показать информацию о родителях (Если пользователь - ребенок)
         """
-        return User.parse_obj(
+        return UserInformation.parse_obj(
             self.get(
                 "https://lyceum.yandex.ru/api/profile",
                 params={
@@ -130,7 +130,7 @@ class Client(Session):
         ).json()
         return [BaseMaterial.parse_obj(material) for material in materials]
 
-    def get_material(self, material_id, group_id, lesson_id) -> List[Material]:
+    def get_material(self, material_id, group_id, lesson_id) -> MaterialInformation:
         """
         Возвращает информацию о материале по его идентификатору.
 
@@ -138,30 +138,31 @@ class Client(Session):
         :param lesson_id: Идентификатор урока
         :param group_id: Идентификатор группы
         """
-        materials = self.get(
-            f"https://lyceum.yandex.ru/api/student/materials/{material_id}",
-            params={"groupId": group_id, "lessonId": lesson_id},
-        ).json()
-        return [Material.parse_obj(material) for material in materials]
+        return MaterialInformation.parse_obj(
+            self.get(
+                f"https://lyceum.yandex.ru/api/student/materials/{material_id}",
+                params={"groupId": group_id, "lessonId": lesson_id},
+            ).json()
+        )
 
-    def get_solution(self, solution_id) -> DetailedSolution:
+    def get_solution(self, solution_id) -> SolutionInformation:
         """
         Возвращает информацию о решении.
 
         :param solution_id: Идентификатор решения
         """
-        return DetailedSolution.parse_obj(
+        return SolutionInformation.parse_obj(
             self.get(
                 f"https://lyceum.yandex.ru/api/student/solutions/{solution_id}"
             ).json()
         )
 
-    def get_notifications(self, is_read=False) -> Notifications:
+    def get_notifications(self, is_read=False) -> NotificationInformation:
         """Возвращает список уведомлений пользователя
 
         :param is_read: Показать уведомления, которые уже прочитаны
         """
-        return Notifications.parse_obj(
+        return NotificationInformation.parse_obj(
             self.get(
                 "https://lyceum.yandex.ru/api/notifications",
                 params={"isRead": str(is_read).lower()},

@@ -1,22 +1,8 @@
 from datetime import datetime
 from typing import List, Optional, Union
 
-from PyYandexLMS.models.base import BaseModel
+from PyYandexLMS.models.base import BaseModel, BaseSolution
 from PyYandexLMS.models.lesson import BaseLesson
-
-
-class Status(BaseModel):
-    id: int
-    type: str
-
-
-class Solution(BaseModel):
-    id: int
-    score: int
-    status: Status
-    task_id: int
-    added_time: datetime
-    update_time: datetime
 
 
 class Tag(BaseModel):
@@ -33,7 +19,7 @@ class BaseTask(BaseModel):
     tag: Tag
     score_max: int
     lesson: BaseLesson
-    solution: Optional[Solution]
+    solution: Optional[BaseSolution]
     deadline: Union[datetime, None]
     is_contest_integrated: bool
     has_manual_check: bool

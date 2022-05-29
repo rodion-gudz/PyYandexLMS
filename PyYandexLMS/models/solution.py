@@ -1,12 +1,12 @@
 from datetime import datetime
 from typing import List, Optional, Union
 
-from PyYandexLMS.models.base import BaseModel
-from PyYandexLMS.models.task import BaseTask, File, Status, Submission
+from PyYandexLMS.models.base import BaseModel, BaseSolution
+from PyYandexLMS.models.task import File, Submission, BaseTask
 from PyYandexLMS.models.user import BaseUser
 
 
-class VerdictOfSubmission(BaseModel):
+class Verdict(BaseModel):
     id: int
     contest_score: float
     file: File
@@ -34,25 +34,20 @@ class Comment(BaseModel):
     added_time: datetime
     update_time: datetime
     submission: Union[Submission, None]
-    verdict_of_submission: Union[VerdictOfSubmission, None]
+    verdict_of_submission: Union[Verdict, None]
 
 
-class BaseSolution(BaseModel):
-    id: int
-    score: int
-    status: Status
+class Solution(BaseSolution):
     deadline: datetime
     task: BaseTask
     student: BaseUser
-    added_time: datetime
-    update_time: datetime
     has_activity_after_deadline: bool
     latest_submission: Union[Submission, None]
     submissions_count: int
     is_score_max: bool
 
 
-class Solution(BaseModel):
-    solution: BaseSolution
+class SolutionInformation(BaseModel):
+    solution: Solution
     file: Optional[File]
     comments: List[Comment]

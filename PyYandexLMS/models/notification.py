@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from PyYandexLMS.models.base import BaseModel
+from PyYandexLMS.models.base import BaseModel, Status
 
 
 class Lesson(BaseModel):
@@ -10,11 +10,6 @@ class Lesson(BaseModel):
     title: str
     is_accepted: bool
     short_title: str
-
-
-class Status(BaseModel):
-    id: int
-    type: str
 
 
 class Task(BaseModel):
@@ -48,7 +43,7 @@ class Notification(BaseModel):
     added_time: datetime
 
 
-class Notifications(BaseModel):
+class NotificationInformation(BaseModel):
     notification_map: Dict[int, Notification]
     notification_ids: List[int]
     unread_count: int
