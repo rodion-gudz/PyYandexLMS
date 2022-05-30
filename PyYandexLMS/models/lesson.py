@@ -1,7 +1,7 @@
 from typing import Union
 
-from PyYandexLMS.models.base.main import BaseModel
 from PyYandexLMS.models.base.lesson import BaseLesson
+from PyYandexLMS.models.base.main import BaseModel
 
 
 class Lesson(BaseLesson):
