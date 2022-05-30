@@ -3,7 +3,7 @@ from typing import List, Union
 from PyYandexLMS.models.base.main import BaseModel
 from PyYandexLMS.models.group import Group
 from PyYandexLMS.models.progress import Progress
-from PyYandexLMS.models.shedule_plan import SchedulePlan
+from PyYandexLMS.models.schedule_plan import SchedulePlan
 from PyYandexLMS.models.user import User
 
 
