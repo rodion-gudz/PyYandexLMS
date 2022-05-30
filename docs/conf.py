@@ -29,7 +29,7 @@ html_css_files = [
 ]
 highlight_language = "python3"
 
-language = "ru"
+language = "en"
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 source_suffix = [".rst", ".md"]
