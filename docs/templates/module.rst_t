@@ -1,0 +1,6 @@
+{{ ' '.join(' '.join(basename.split('.')[1:]).split('_')).capitalize() | e | heading }}
+
+.. automodule:: PyYandexLMS.{{ qualname }}
+    :members:
+    :member-order: bysource
+    :undoc-members: True
