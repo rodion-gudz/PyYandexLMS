@@ -1,4 +1,4 @@
-from datetime import time, date
+from datetime import date, time
 from typing import List
 
 from PyYandexLMS.models.base.main import BaseModel

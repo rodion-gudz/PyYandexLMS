@@ -10,7 +10,7 @@ from PyYandexLMS.models.lesson import BaseLesson, Lesson
 from PyYandexLMS.models.materials import BaseMaterial, MaterialInformation
 from PyYandexLMS.models.notification import NotificationInformation
 from PyYandexLMS.models.profile import ProfileInformation
-from PyYandexLMS.models.solution import SolutionInformation, BaseSolution
+from PyYandexLMS.models.solution import BaseSolution, SolutionInformation
 from PyYandexLMS.models.task import Task, TaskType
 
 
