@@ -1,30 +1,24 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from PyYandexLMS.models.base import BaseModel, Status
+from PyYandexLMS.models.base.main import BaseModel
+from PyYandexLMS.models.lesson import NotificationLesson
+from PyYandexLMS.models.status import Status
 
 
-class Lesson(BaseModel):
-    id: int
-    type: str
-    title: str
-    is_accepted: bool
-    short_title: str
-
-
-class Task(BaseModel):
+class NotificationTask(BaseModel):
     id: int
     group: int
     title: str
     course: int
-    lesson: Lesson
+    lesson: NotificationLesson
     score_max: int
     short_title: str
 
 
 class TaskSolution(BaseModel):
     id: int
-    task: Task
+    task: NotificationTask
     score: int
     status: Status
 

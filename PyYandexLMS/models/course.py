@@ -1,35 +1,17 @@
-from datetime import date, time
-from typing import List, Optional, Union
+from typing import List, Union
 
-from PyYandexLMS.models.base import BaseModel, BaseUser, Group
-
-
-class SchedulePlanItem(BaseModel):
-    id: int
-    schedule_plan: int
-    day_of_week: int
-    start_time: time
-
-
-class SchedulePlan(BaseModel):
-    id: int
-    group: int
-    study_period: int
-    start_date: date
-    items: List[SchedulePlanItem]
-
-
-class Progress(BaseModel):
-    num_tasks: Optional[int]
-    num_passed: Optional[int]
-    num_rework: Optional[int]
+from PyYandexLMS.models.base.main import BaseModel
+from PyYandexLMS.models.group import Group
+from PyYandexLMS.models.progress import Progress
+from PyYandexLMS.models.shedule_plan import SchedulePlan
+from PyYandexLMS.models.user import User
 
 
 class Course(BaseModel):
     id: int
     title: str
-    teacher: Union[BaseUser, None]
-    teachers_list: Union[List[BaseUser], None]
+    teacher: Union[User, None]
+    teachers_list: Union[List[User], None]
     group: Group
     rating: float
     bonus_score: float
@@ -52,4 +34,4 @@ class Course(BaseModel):
 
 class CoursesSummary(BaseModel):
     student: Union[List[Course], None]
-    teacher: Union[List[BaseUser], None]
+    teacher: Union[List[Course], None]

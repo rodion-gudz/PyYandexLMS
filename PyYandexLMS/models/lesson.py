@@ -1,6 +1,7 @@
 from typing import Union
 
-from PyYandexLMS.models.base import BaseLesson
+from PyYandexLMS.models.base.main import BaseModel
+from PyYandexLMS.models.base.lesson import BaseLesson
 
 
 class Lesson(BaseLesson):
@@ -9,3 +10,11 @@ class Lesson(BaseLesson):
     score: int
     is_test_started: Union[bool, None]
     is_test_finished: Union[bool, None]
+
+
+class NotificationLesson(BaseModel):
+    id: int
+    type: str
+    title: str
+    is_accepted: bool
+    short_title: str

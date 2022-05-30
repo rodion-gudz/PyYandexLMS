@@ -5,14 +5,13 @@ from typing import List, Union
 from requests import Session
 
 from PyYandexLMS.errors import AuthError
-from PyYandexLMS.models.base import BaseSolution
 from PyYandexLMS.models.course import Course
 from PyYandexLMS.models.lesson import BaseLesson, Lesson
 from PyYandexLMS.models.materials import BaseMaterial, MaterialInformation
 from PyYandexLMS.models.notification import NotificationInformation
-from PyYandexLMS.models.solution import SolutionInformation
+from PyYandexLMS.models.profile import ProfileInformation
+from PyYandexLMS.models.solution import SolutionInformation, BaseSolution
 from PyYandexLMS.models.task import Task, TaskType
-from PyYandexLMS.models.user import UserInformation
 
 
 class Client(Session):
@@ -52,7 +51,7 @@ class Client(Session):
         with_expelled: bool = True,
         with_children: bool = True,
         with_parents: bool = True,
-    ) -> UserInformation:
+    ) -> ProfileInformation:
         """
         Возвращает информацию о пользователе в виде объекта UserInformation.
 
@@ -62,7 +61,7 @@ class Client(Session):
         :param with_parents: Показать информацию о родителях (Если пользователь - ребенок)
         """
 
-        return UserInformation.parse_obj(
+        return ProfileInformation.parse_obj(
             self.get(
                 "https://lyceum.yandex.ru/api/profile",
                 params={

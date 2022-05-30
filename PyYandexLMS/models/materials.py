@@ -1,11 +1,12 @@
-from PyYandexLMS.models.base import BaseMaterial, BaseModel
+from PyYandexLMS.models.base.main import BaseModel
+from PyYandexLMS.models.base.material import BaseMaterial
 from PyYandexLMS.models.lesson import BaseLesson
 
 
-class DetailedMaterial(BaseMaterial):
+class Material(BaseMaterial):
     content: str
 
 
 class MaterialInformation(BaseModel):
-    detailed_material: DetailedMaterial
+    detailed_material: Material
     lesson: BaseLesson
