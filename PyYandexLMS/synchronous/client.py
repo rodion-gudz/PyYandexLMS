@@ -12,6 +12,7 @@ from PyYandexLMS.models.notification import NotificationInformation
 from PyYandexLMS.models.profile import ProfileInformation
 from PyYandexLMS.models.solution import BaseSolution, SolutionInformation
 from PyYandexLMS.models.task import Task, TaskType
+from PyYandexLMS.utils.link_generator import *
 
 
 class Client(Session):
@@ -26,13 +27,11 @@ class Client(Session):
         super().__init__()
         session_name = session_name or f"{login}.session"
         if not os.path.exists(session_name):
-            if (
-                self.post(
-                    "https://passport.yandex.ru/passport?mode=auth",
-                    data={"login": login, "passwd": password},
-                ).url
-                != "https://passport.yandex.ru/profile"
-            ):
+            self.post(
+                "https://passport.yandex.ru/passport?mode=auth",
+                data={"login": login, "passwd": password},
+            )
+            if not self.check_authorized():
                 raise AuthError("Ошибка авторизации (Неверные данные или включен 2FA)")
             with open(session_name, "wb") as f:
                 pickle.dump(self.cookies, f)
@@ -63,47 +62,44 @@ class Client(Session):
 
         return ProfileInformation.parse_obj(
             self.get(
-                "https://lyceum.yandex.ru/api/profile",
-                params={
-                    "withCoursesSummary": with_courses_summary,
-                    "withExpelled": with_expelled,
-                    "withChildren": with_children,
-                    "withParents": with_parents,
-                },
+                get_user_information_link(
+                    with_courses_summary=with_courses_summary,
+                    with_expelled=with_expelled,
+                    with_children=with_children,
+                    with_parents=with_parents,
+                )
             ).json()
         )
 
     def get_lessons(
         self,
-        course: Course = None,
-        course_id: int = None,
-        group_id: int = None,
+        course_id: int,
+        group_id: int,
     ) -> List[BaseLesson]:
         """
         Возвращает список уроков в курсе.
 
-        Необходимо передать объект курса или course_id + group_id.
-
-        :param course: Объект кура (Course)
         :param course_id: Идентификатор курса
         :param group_id: Идентификатор группы
         """
 
-        if course:
-            course_id = course.id
-            group_id = course.group.id
-
-        if not course_id or not group_id:
-            raise ValueError(
-                "Необходимо передать объект курса или course_id + group_id"
-            )
-
         lessons = self.get(
-            "https://lyceum.yandex.ru/api/student/lessons/",
-            params={"courseId": course_id, "groupId": group_id},
+            get_lessons_list_link(
+                course_id=course_id,
+                group_id=group_id,
+            )
         ).json()
 
         return [BaseLesson.parse_obj(lesson) for lesson in lessons]
+
+    def get_lessons_by_course(self, course: Course) -> List[BaseLesson]:
+        """
+        Возвращает список уроков в курсе.
+
+        :param course: Объект курса (Course)
+        """
+
+        return self.get_lessons(course_id=course.id, group_id=course.group.id)
 
     def get_lesson(self, lesson_id: int, course_id: int, group_id: int) -> Lesson:
         """
@@ -116,8 +112,11 @@ class Client(Session):
 
         return Lesson.parse_obj(
             self.get(
-                f"https://lyceum.yandex.ru/api/student/lessons/{lesson_id}",
-                params={"courseId": course_id, "groupId": group_id},
+                get_lesson_information_link(
+                    lesson_id=lesson_id,
+                    course_id=course_id,
+                    group_id=group_id,
+                )
             ).json()
         )
 
@@ -132,8 +131,11 @@ class Client(Session):
         :param group_id: Идентификатор группы
         """
         tasks = self.get(
-            "https://lyceum.yandex.ru/api/student/lessonTasks",
-            params={"courseId": course_id, "groupId": group_id, "lessonId": lesson_id},
+            get_tasks_list_link(
+                lesson_id=lesson_id,
+                course_id=course_id,
+                group_id=group_id,
+            )
         ).json()
 
         return [TaskType.parse_obj(task_type) for task_type in tasks]
@@ -148,37 +150,40 @@ class Client(Session):
 
         return Task.parse_obj(
             self.get(
-                f"https://lyceum.yandex.ru/api/student/tasks/{task_id}",
-                params={"groupId": group_id},
+                get_task_information_link(
+                    task_id=task_id,
+                    group_id=group_id,
+                )
             ).json()
         )
 
-    def get_materials(
-        self, lesson: Union[Lesson, BaseLesson] = None, lesson_id: int = None
-    ) -> List[BaseMaterial]:
+    def get_materials(self, lesson_id: int) -> List[BaseMaterial]:
         """
         Возвращает список материалов в уроке.
 
-        Необходимо передать объект урока или lesson_id.
-
-        :param lesson: Объект урока (Lesson или BaseLesson)
         :param lesson_id: Идентификатор урока
         """
 
-        if lesson:
-            lesson_id = lesson.id
-
         materials = self.get(
-            "https://lyceum.yandex.ru/api/materials/", params={"lessonId": lesson_id}
+            get_materials_list_link(lesson_id=lesson_id),
         ).json()
 
         return [BaseMaterial.parse_obj(material) for material in materials]
 
+    def get_materials_by_lesson(self, lesson: Union[Lesson, BaseLesson]):
+        """
+        Возвращает список материалов в уроке.
+
+        :param lesson: Объект урока (Lesson или BaseLesson)
+        """
+
+        return self.get_materials(lesson_id=lesson.id)
+
     def get_material(
         self,
-        material_id: int = None,
-        group_id: int = None,
-        lesson_id: int = None,
+        material_id: int,
+        group_id: int,
+        lesson_id: int,
     ) -> MaterialInformation:
         """
         Возвращает информацию о материале по его идентификатору.
@@ -190,31 +195,33 @@ class Client(Session):
 
         return MaterialInformation.parse_obj(
             self.get(
-                f"https://lyceum.yandex.ru/api/student/materials/{material_id}",
-                params={"groupId": group_id, "lessonId": lesson_id},
+                get_material_information_link(
+                    material_id=material_id, lesson_id=lesson_id, group_id=group_id
+                )
             ).json()
         )
 
-    def get_solution(
-        self, solution: BaseSolution = None, solution_id: int = None
+    def get_solution_information(self, solution_id: int) -> SolutionInformation:
+        """
+        Возвращает информацию о решении.
+
+        :param solution_id: Идентификатор решения
+        """
+
+        return SolutionInformation.parse_obj(
+            self.get(get_solution_information_link(solution_id=solution_id)).json()
+        )
+
+    def get_solution_information_by_solution(
+        self, solution: BaseSolution
     ) -> SolutionInformation:
         """
         Возвращает информацию о решении.
 
-        Необходимо передать объект решения или solution_id.
-
-        :param solution: Объект решения (BaseSolution)
-        :param solution_id: Идентификатор решения
+        :param solution: Объект решения BaseSolution
         """
 
-        if solution:
-            solution_id = solution.id
-
-        return SolutionInformation.parse_obj(
-            self.get(
-                f"https://lyceum.yandex.ru/api/student/solutions/{solution_id}"
-            ).json()
-        )
+        return self.get_solution_information(solution_id=solution.id)
 
     def get_notifications(self, is_read: bool = False) -> NotificationInformation:
         """Возвращает список уведомлений пользователя
@@ -223,8 +230,5 @@ class Client(Session):
         """
 
         return NotificationInformation.parse_obj(
-            self.get(
-                "https://lyceum.yandex.ru/api/notifications",
-                params={"isRead": is_read},
-            ).json()
+            self.get(get_notifications_link(is_read=is_read)).json()
         )
