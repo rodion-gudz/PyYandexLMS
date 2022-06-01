@@ -50,6 +50,7 @@ class Client(Session):
         with_expelled: bool = True,
         with_children: bool = True,
         with_parents: bool = True,
+        raw: bool = False,
     ) -> ProfileInformation:
         """
         Возвращает информацию о пользователе в виде объекта UserInformation.
@@ -58,70 +59,85 @@ class Client(Session):
         :param with_expelled: Включить информацию о законченных курсах
         :param with_children: Показать информацию о детях (Если пользователь - родитель)
         :param with_parents: Показать информацию о родителях (Если пользователь - ребенок)
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        return ProfileInformation.parse_obj(
-            self.get(
-                get_user_information_link(
-                    with_courses_summary=with_courses_summary,
-                    with_expelled=with_expelled,
-                    with_children=with_children,
-                    with_parents=with_parents,
-                )
-            ).json()
-        )
+        response_json = self.get(
+            get_user_information_link(
+                with_courses_summary=with_courses_summary,
+                with_expelled=with_expelled,
+                with_children=with_children,
+                with_parents=with_parents,
+            )
+        ).json()
+
+        if raw:
+            return response_json
+        return ProfileInformation.parse_obj(response_json)
 
     def get_lessons(
         self,
         course_id: int,
         group_id: int,
+        raw: bool = False,
     ) -> List[BaseLesson]:
         """
         Возвращает список уроков в курсе.
 
         :param course_id: Идентификатор курса
         :param group_id: Идентификатор группы
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        lessons = self.get(
+        response_json = self.get(
             get_lessons_list_link(
                 course_id=course_id,
                 group_id=group_id,
             )
         ).json()
 
-        return [BaseLesson.parse_obj(lesson) for lesson in lessons]
+        if raw:
+            return response_json
+        return [BaseLesson.parse_obj(lesson) for lesson in response_json]
 
-    def get_lessons_by_course(self, course: Course) -> List[BaseLesson]:
+    def get_lessons_by_course(
+        self, course: Course, raw: bool = False
+    ) -> List[BaseLesson]:
         """
         Возвращает список уроков в курсе.
 
         :param course: Объект курса (Course)
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        return self.get_lessons(course_id=course.id, group_id=course.group.id)
+        return self.get_lessons(course_id=course.id, group_id=course.group.id, raw=raw)
 
-    def get_lesson(self, lesson_id: int, course_id: int, group_id: int) -> Lesson:
+    def get_lesson(
+        self, lesson_id: int, course_id: int, group_id: int, raw: bool = False
+    ) -> Lesson:
         """
         Возвращает информацию о уроке.
 
         :param lesson_id: Идентификатор урока
         :param course_id: Идентификатор курса
         :param group_id: Идентификатор группы
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        return Lesson.parse_obj(
-            self.get(
-                get_lesson_information_link(
-                    lesson_id=lesson_id,
-                    course_id=course_id,
-                    group_id=group_id,
-                )
-            ).json()
-        )
+        response_json = self.get(
+            get_lesson_information_link(
+                lesson_id=lesson_id,
+                course_id=course_id,
+                group_id=group_id,
+            )
+        ).json()
+
+        if raw:
+            return response_json
+        return Lesson.parse_obj(response_json)
 
     def get_tasks(
-        self, lesson_id: int, course_id: int, group_id: int
+        self, lesson_id: int, course_id: int, group_id: int, raw: bool = False
     ) -> List[TaskType]:
         """
         Возвращает список заданий в уроке.
@@ -129,8 +145,10 @@ class Client(Session):
         :param lesson_id: Идентификатор урока
         :param course_id: Идентификатор курса
         :param group_id: Идентификатор группы
+        :param raw: Вернуть ответ API в виде словаря
         """
-        tasks = self.get(
+
+        response_json = self.get(
             get_tasks_list_link(
                 lesson_id=lesson_id,
                 course_id=course_id,
@@ -138,52 +156,60 @@ class Client(Session):
             )
         ).json()
 
-        return [TaskType.parse_obj(task_type) for task_type in tasks]
+        if raw:
+            return response_json
+        return [TaskType.parse_obj(task_type) for task_type in response_json]
 
-    def get_task(self, task_id: int, group_id: int) -> Task:
+    def get_task(self, task_id: int, group_id: int, raw: bool = False) -> Task:
         """
         Возвращает информацию о задании.
 
         :param task_id: Идентификатор задания
         :param group_id: Идентификатор группы
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        return Task.parse_obj(
-            self.get(
-                get_task_information_link(
-                    task_id=task_id,
-                    group_id=group_id,
-                )
-            ).json()
-        )
+        response_json = self.get(
+            get_task_information_link(
+                task_id=task_id,
+                group_id=group_id,
+            )
+        ).json()
 
-    def get_materials(self, lesson_id: int) -> List[BaseMaterial]:
+        if raw:
+            return response_json
+        return Task.parse_obj(response_json)
+
+    def get_materials(self, lesson_id: int, raw: bool = False) -> List[BaseMaterial]:
         """
         Возвращает список материалов в уроке.
 
         :param lesson_id: Идентификатор урока
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        materials = self.get(
+        response_json = self.get(
             get_materials_list_link(lesson_id=lesson_id),
         ).json()
 
-        return [BaseMaterial.parse_obj(material) for material in materials]
+        if raw:
+            return response_json
+        return [BaseMaterial.parse_obj(material) for material in response_json]
 
-    def get_materials_by_lesson(self, lesson: Union[Lesson, BaseLesson]):
+    def get_materials_by_lesson(
+        self, lesson: Union[Lesson, BaseLesson], raw: bool = False
+    ):
         """
         Возвращает список материалов в уроке.
 
         :param lesson: Объект урока (Lesson или BaseLesson)
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        return self.get_materials(lesson_id=lesson.id)
+        return self.get_materials(lesson_id=lesson.id, raw=raw)
 
     def get_material(
-        self,
-        material_id: int,
-        group_id: int,
-        lesson_id: int,
+        self, material_id: int, group_id: int, lesson_id: int, raw: bool = False
     ) -> MaterialInformation:
         """
         Возвращает информацию о материале по его идентификатору.
@@ -191,44 +217,60 @@ class Client(Session):
         :param material_id: Идентификатор материала
         :param lesson_id: Идентификатор урока
         :param group_id: Идентификатор группы
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        return MaterialInformation.parse_obj(
-            self.get(
-                get_material_information_link(
-                    material_id=material_id, lesson_id=lesson_id, group_id=group_id
-                )
-            ).json()
-        )
+        response_json = self.get(
+            get_material_information_link(
+                material_id=material_id, lesson_id=lesson_id, group_id=group_id
+            )
+        ).json()
 
-    def get_solution_information(self, solution_id: int) -> SolutionInformation:
+        if raw:
+            return response_json
+        return MaterialInformation.parse_obj(response_json)
+
+    def get_solution_information(
+        self, solution_id: int, raw: bool = False
+    ) -> SolutionInformation:
         """
         Возвращает информацию о решении.
 
         :param solution_id: Идентификатор решения
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        return SolutionInformation.parse_obj(
-            self.get(get_solution_information_link(solution_id=solution_id)).json()
-        )
+        response_json = self.get(
+            get_solution_information_link(solution_id=solution_id)
+        ).json()
+
+        if raw:
+            return response_json
+        return SolutionInformation.parse_obj(response_json)
 
     def get_solution_information_by_solution(
-        self, solution: BaseSolution
+        self, solution: BaseSolution, raw: bool = False
     ) -> SolutionInformation:
         """
         Возвращает информацию о решении.
 
         :param solution: Объект решения BaseSolution
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        return self.get_solution_information(solution_id=solution.id)
+        return self.get_solution_information(solution_id=solution.id, raw=raw)
 
-    def get_notifications(self, is_read: bool = False) -> NotificationInformation:
+    def get_notifications(
+        self, is_read: bool = False, raw: bool = False
+    ) -> NotificationInformation:
         """Возвращает список уведомлений пользователя
 
         :param is_read: Показать уведомления, которые уже прочитаны
+        :param raw: Вернуть ответ API в виде словаря
         """
 
-        return NotificationInformation.parse_obj(
-            self.get(get_notifications_link(is_read=is_read)).json()
-        )
+        response_json = self.get(get_notifications_link(is_read=is_read)).json()
+
+        if raw:
+            return response_json
+        return NotificationInformation.parse_obj(response_json)
