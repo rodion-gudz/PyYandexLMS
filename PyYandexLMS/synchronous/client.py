@@ -4,7 +4,7 @@ from typing import List, Union
 
 from requests import Session
 
-from PyYandexLMS.errors import AuthError, ApiException
+from PyYandexLMS.errors import ApiException, AuthError
 from PyYandexLMS.models.course import Course
 from PyYandexLMS.models.lesson import BaseLesson, Lesson
 from PyYandexLMS.models.materials import BaseMaterial, MaterialInformation
@@ -49,7 +49,7 @@ class Client(Session):
         if "code" in request_json:
             raise ApiException(
                 code=request_json["code"].split("_")[0],
-                message=' '.join(request_json["code"].split("_")[1:]),
+                message=" ".join(request_json["code"].split("_")[1:]),
             )
         return request_json
 

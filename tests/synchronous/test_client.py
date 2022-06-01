@@ -37,7 +37,10 @@ def test_get_lessons(requests_mock):
     course = st.from_type(Course).example()
 
     for data in json.loads(fake_json):
-        requests_mock.get(get_lessons_list_link(course_id=course.id, group_id=course.group.id), json=data)
+        requests_mock.get(
+            get_lessons_list_link(course_id=course.id, group_id=course.group.id),
+            json=data,
+        )
         try:
             assert client.get_lessons(course_id=course.id, group_id=course.group.id)
         except Exception as e:
