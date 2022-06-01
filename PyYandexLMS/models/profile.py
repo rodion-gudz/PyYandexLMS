@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Union, Optional
 
 from PyYandexLMS.models.base.main import BaseModel
 from PyYandexLMS.models.base.profile import BaseProfile
@@ -16,7 +16,7 @@ class Profile(BaseProfile):
     managed_cities: List[str]
     managed_venues: List[str]
     city_to_managed_venues: List[str]
-    invite: Invite
+    invite: Optional[Invite]
 
 
 class ProfileInformation(BaseModel):

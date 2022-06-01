@@ -1,4 +1,5 @@
-from typing import List, Union
+from typing import List, Union, Optional
+from urllib.parse import urlencode
 
 from PyYandexLMS.models.base.main import BaseModel
 from PyYandexLMS.models.group import Group
@@ -13,9 +14,9 @@ class Course(BaseModel):
     teacher: Union[User, None]
     teachers_list: Union[List[User], None]
     group: Group
-    rating: float
-    bonus_score: float
-    progress: Progress
+    rating: Optional[float]
+    bonus_score: Optional[float]
+    progress: Optional[Progress]
     use_bonus_score: bool
     max_bonus_score: float
     certificate_id: Union[int, None]
@@ -26,9 +27,9 @@ class Course(BaseModel):
     logo_width: Union[int, None]
     is_archive: bool
     is_active: bool
-    status: str
-    events_count: int
-    visited_attendances_count: int
+    status: Optional[str]
+    events_count: Optional[int]
+    visited_attendances_count: Optional[int]
     schedule_plan: SchedulePlan
 
 
