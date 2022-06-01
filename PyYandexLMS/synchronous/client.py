@@ -4,7 +4,7 @@ from typing import List, Union
 
 from requests import Session
 
-from PyYandexLMS.errors import AuthError
+from PyYandexLMS.errors import AuthError, ApiException
 from PyYandexLMS.models.course import Course
 from PyYandexLMS.models.lesson import BaseLesson, Lesson
 from PyYandexLMS.models.materials import BaseMaterial, MaterialInformation
@@ -44,6 +44,15 @@ class Client(Session):
 
         return self.get("https://api.passport.yandex.ru/all_accounts").text != "{}"
 
+    def __get(self, *args, **kwargs):
+        request_json = self.get(*args, **kwargs).json()
+        if "code" in request_json:
+            raise ApiException(
+                code=request_json["code"].split("_")[0],
+                message=' '.join(request_json["code"].split("_")[1:]),
+            )
+        return request_json
+
     def get_user(
         self,
         with_courses_summary: bool = True,
@@ -62,14 +71,14 @@ class Client(Session):
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        response_json = self.get(
+        response_json = self.__get(
             get_user_information_link(
                 with_courses_summary=with_courses_summary,
                 with_expelled=with_expelled,
                 with_children=with_children,
                 with_parents=with_parents,
             )
-        ).json()
+        )
 
         if raw:
             return response_json
@@ -89,12 +98,12 @@ class Client(Session):
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        response_json = self.get(
+        response_json = self.__get(
             get_lessons_list_link(
                 course_id=course_id,
                 group_id=group_id,
             )
-        ).json()
+        )
 
         if raw:
             return response_json
@@ -124,13 +133,13 @@ class Client(Session):
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        response_json = self.get(
+        response_json = self.__get(
             get_lesson_information_link(
                 lesson_id=lesson_id,
                 course_id=course_id,
                 group_id=group_id,
             )
-        ).json()
+        )
 
         if raw:
             return response_json
@@ -148,13 +157,13 @@ class Client(Session):
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        response_json = self.get(
+        response_json = self.__get(
             get_tasks_list_link(
                 lesson_id=lesson_id,
                 course_id=course_id,
                 group_id=group_id,
             )
-        ).json()
+        )
 
         if raw:
             return response_json
@@ -169,12 +178,12 @@ class Client(Session):
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        response_json = self.get(
+        response_json = self.__get(
             get_task_information_link(
                 task_id=task_id,
                 group_id=group_id,
             )
-        ).json()
+        )
 
         if raw:
             return response_json
@@ -188,9 +197,9 @@ class Client(Session):
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        response_json = self.get(
+        response_json = self.__get(
             get_materials_list_link(lesson_id=lesson_id),
-        ).json()
+        )
 
         if raw:
             return response_json
@@ -220,11 +229,11 @@ class Client(Session):
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        response_json = self.get(
+        response_json = self.__get(
             get_material_information_link(
                 material_id=material_id, lesson_id=lesson_id, group_id=group_id
             )
-        ).json()
+        )
 
         if raw:
             return response_json
@@ -240,9 +249,9 @@ class Client(Session):
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        response_json = self.get(
+        response_json = self.__get(
             get_solution_information_link(solution_id=solution_id)
-        ).json()
+        )
 
         if raw:
             return response_json
@@ -269,7 +278,7 @@ class Client(Session):
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        response_json = self.get(get_notifications_link(is_read=is_read)).json()
+        response_json = self.__get(get_notifications_link(is_read=is_read))
 
         if raw:
             return response_json
