@@ -1,4 +1,4 @@
-from typing import List, Union, Optional
+from typing import List, Optional, Union
 from urllib.parse import urlencode
 
 from PyYandexLMS.models.base.main import BaseModel
