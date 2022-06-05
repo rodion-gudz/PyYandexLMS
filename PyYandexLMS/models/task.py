@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Union, Optional
 
 from PyYandexLMS.models.base.main import BaseModel
 from PyYandexLMS.models.base.task import BaseTask
@@ -19,4 +19,4 @@ class TaskType(BaseModel):
     type: str
     color: str
     order: int
-    tasks: List[BaseTask]
+    tasks: Optional[List[BaseTask]]
