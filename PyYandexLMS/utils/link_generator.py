@@ -56,6 +56,11 @@ def get_solution_information_link(solution_id: int) -> str:
     return f"https://lyceum.yandex.ru/api/student/tasks/{solution_id}"
 
 
+def get_problem_detail_link(solution_id: int) -> str:
+    params = {"solutionId": solution_id}
+    return f"https://lyceum.yandex.ru/api/problem/details?{urlencode(params)}"
+
+
 def get_notifications_link(is_read: bool = False) -> str:
     params = {"isRead": is_read}
     return f"https://lyceum.yandex.ru/api/notifications?{urlencode(params)}"

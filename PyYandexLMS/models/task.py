@@ -2,7 +2,7 @@ from typing import List, Optional, Union
 
 from PyYandexLMS.models.base.main import BaseModel
 from PyYandexLMS.models.base.task import BaseTask
-from PyYandexLMS.models.problem import ProblemInformation
+from PyYandexLMS.models.problem import DetailedProblem
 from PyYandexLMS.models.submission import Submission
 from PyYandexLMS.models.variant import Variant
 
@@ -21,4 +21,4 @@ class TaskType(BaseModel):
     color: str
     order: int
     tasks: Optional[List[BaseTask]]
-    problems: Optional[List[ProblemInformation]]
+    problems: Optional[List[DetailedProblem]]
