@@ -16,6 +16,7 @@ from PyYandexLMS.utils.link_generator import *
 
 
 class Client(Session):
+
     def __init__(self, login: str, password: str, session_name: str = None):
         """
         Сессия Yandex Lyceum API. Основана на Requests session.
@@ -29,10 +30,14 @@ class Client(Session):
         if not os.path.exists(session_name):
             self.post(
                 "https://passport.yandex.ru/passport?mode=auth",
-                data={"login": login, "passwd": password},
+                data={
+                    "login": login,
+                    "passwd": password
+                },
             )
             if not self.check_authorized():
-                raise AuthError("Ошибка авторизации (Неверные данные или включен 2FA)")
+                raise AuthError(
+                    "Ошибка авторизации (Неверные данные или включен 2FA)")
             with open(session_name, "wb") as f:
                 pickle.dump(self.cookies, f)
         else:
@@ -42,7 +47,8 @@ class Client(Session):
     def check_authorized(self):
         """Проверка авторизации пользователя"""
 
-        return self.get("https://api.passport.yandex.ru/all_accounts").text != "{}"
+        return self.get(
+            "https://api.passport.yandex.ru/all_accounts").text != "{}"
 
     def get(self, *args, **kwargs):
         request = super().get(*args, **kwargs)
@@ -78,8 +84,7 @@ class Client(Session):
                 with_expelled=with_expelled,
                 with_children=with_children,
                 with_parents=with_parents,
-            )
-        ).json()
+            )).json()
 
         if raw:
             return response_json
@@ -103,16 +108,15 @@ class Client(Session):
             get_lessons_list_link(
                 course_id=course_id,
                 group_id=group_id,
-            )
-        ).json()
+            )).json()
 
         if raw:
             return response_json
         return [BaseLesson.parse_obj(lesson) for lesson in response_json]
 
-    def get_lessons_by_course(
-        self, course: Course, raw: bool = False
-    ) -> List[BaseLesson]:
+    def get_lessons_by_course(self,
+                              course: Course,
+                              raw: bool = False) -> List[BaseLesson]:
         """
         Возвращает список уроков в курсе.
 
@@ -120,11 +124,15 @@ class Client(Session):
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        return self.get_lessons(course_id=course.id, group_id=course.group.id, raw=raw)
+        return self.get_lessons(course_id=course.id,
+                                group_id=course.group.id,
+                                raw=raw)
 
-    def get_lesson(
-        self, lesson_id: int, course_id: int, group_id: int, raw: bool = False
-    ) -> Lesson:
+    def get_lesson(self,
+                   lesson_id: int,
+                   course_id: int,
+                   group_id: int,
+                   raw: bool = False) -> Lesson:
         """
         Возвращает информацию о уроке.
 
@@ -139,16 +147,17 @@ class Client(Session):
                 lesson_id=lesson_id,
                 course_id=course_id,
                 group_id=group_id,
-            )
-        ).json()
+            )).json()
 
         if raw:
             return response_json
         return Lesson.parse_obj(response_json)
 
-    def get_tasks(
-        self, lesson_id: int, course_id: int, group_id: int, raw: bool = False
-    ) -> List[TaskType]:
+    def get_tasks(self,
+                  lesson_id: int,
+                  course_id: int,
+                  group_id: int,
+                  raw: bool = False) -> List[TaskType]:
         """
         Возвращает список заданий в уроке.
 
@@ -163,8 +172,7 @@ class Client(Session):
                 lesson_id=lesson_id,
                 course_id=course_id,
                 group_id=group_id,
-            )
-        ).json()
+            )).json()
 
         if raw:
             return response_json
@@ -183,14 +191,15 @@ class Client(Session):
             get_task_information_link(
                 task_id=task_id,
                 group_id=group_id,
-            )
-        ).json()
+            )).json()
 
         if raw:
             return response_json
         return Task.parse_obj(response_json)
 
-    def get_materials(self, lesson_id: int, raw: bool = False) -> List[BaseMaterial]:
+    def get_materials(self,
+                      lesson_id: int,
+                      raw: bool = False) -> List[BaseMaterial]:
         """
         Возвращает список материалов в уроке.
 
@@ -199,16 +208,15 @@ class Client(Session):
         """
 
         response_json = self.get(
-            get_materials_list_link(lesson_id=lesson_id),
-        ).json()
+            get_materials_list_link(lesson_id=lesson_id), ).json()
 
         if raw:
             return response_json
         return [BaseMaterial.parse_obj(material) for material in response_json]
 
-    def get_materials_by_lesson(
-        self, lesson: Union[Lesson, BaseLesson], raw: bool = False
-    ):
+    def get_materials_by_lesson(self,
+                                lesson: Union[Lesson, BaseLesson],
+                                raw: bool = False):
         """
         Возвращает список материалов в уроке.
 
@@ -218,9 +226,11 @@ class Client(Session):
 
         return self.get_materials(lesson_id=lesson.id, raw=raw)
 
-    def get_material(
-        self, material_id: int, group_id: int, lesson_id: int, raw: bool = False
-    ) -> MaterialInformation:
+    def get_material(self,
+                     material_id: int,
+                     group_id: int,
+                     lesson_id: int,
+                     raw: bool = False) -> MaterialInformation:
         """
         Возвращает информацию о материале по его идентификатору.
 
@@ -231,18 +241,17 @@ class Client(Session):
         """
 
         response_json = self.get(
-            get_material_information_link(
-                material_id=material_id, lesson_id=lesson_id, group_id=group_id
-            )
-        ).json()
+            get_material_information_link(material_id=material_id,
+                                          lesson_id=lesson_id,
+                                          group_id=group_id)).json()
 
         if raw:
             return response_json
         return MaterialInformation.parse_obj(response_json)
 
-    def get_solution_information(
-        self, solution_id: int, raw: bool = False
-    ) -> SolutionInformation:
+    def get_solution_information(self,
+                                 solution_id: int,
+                                 raw: bool = False) -> SolutionInformation:
         """
         Возвращает информацию о решении.
 
@@ -251,16 +260,16 @@ class Client(Session):
         """
 
         response_json = self.get(
-            get_solution_information_link(solution_id=solution_id)
-        ).json()
+            get_solution_information_link(solution_id=solution_id)).json()
 
         if raw:
             return response_json
         return SolutionInformation.parse_obj(response_json)
 
     def get_solution_information_by_solution(
-        self, solution: BaseSolution, raw: bool = False
-    ) -> SolutionInformation:
+            self,
+            solution: BaseSolution,
+            raw: bool = False) -> SolutionInformation:
         """
         Возвращает информацию о решении.
 
@@ -270,16 +279,17 @@ class Client(Session):
 
         return self.get_solution_information(solution_id=solution.id, raw=raw)
 
-    def get_notifications(
-        self, is_read: bool = False, raw: bool = False
-    ) -> NotificationInformation:
+    def get_notifications(self,
+                          is_read: bool = False,
+                          raw: bool = False) -> NotificationInformation:
         """Возвращает список уведомлений пользователя
 
         :param is_read: Показать уведомления, которые уже прочитаны
         :param raw: Вернуть ответ API в виде словаря
         """
 
-        response_json = self.get(get_notifications_link(is_read=is_read)).json()
+        response_json = self.get(
+            get_notifications_link(is_read=is_read)).json()
 
         if raw:
             return response_json
