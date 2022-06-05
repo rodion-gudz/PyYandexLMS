@@ -59,8 +59,3 @@ def get_solution_information_link(solution_id: int) -> str:
 def get_notifications_link(is_read: bool = False) -> str:
     params = {"isRead": is_read}
     return f"https://lyceum.yandex.ru/api/notifications?{urlencode(params)}"
-
-
-# def generate_course_links(courses: List[Course]) -> List[str]:
-#     for course in courses:
-#         yield generate_course_link(course)
