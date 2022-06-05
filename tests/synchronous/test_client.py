@@ -93,7 +93,7 @@ def test_get_tasks(requests_mock):
         tasks = client.get_tasks(
             lesson_id=lesson_id, course_id=course_id, group_id=group_id
         )
-        if not tasks == []:
+        if tasks != []:
             assert tasks
 
 
