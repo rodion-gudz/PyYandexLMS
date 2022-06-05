@@ -28,8 +28,8 @@ def get_lesson_information_link(lesson_id: int, course_id: int, group_id: int) -
     )
 
 
-def get_tasks_list_link(lesson_id: int, course_id: int, group_id: int) -> str:
-    params = {"courseId": course_id, "groupId": group_id, "lessonId": lesson_id}
+def get_tasks_list_link(lesson_id: int, course_id: int) -> str:
+    params = {"courseId": course_id, "lessonId": lesson_id}
     return f"https://lyceum.yandex.ru/api/student/lessonTasks?{urlencode(params)}"
 
 
