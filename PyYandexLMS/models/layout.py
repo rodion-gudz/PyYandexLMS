@@ -1,4 +1,4 @@
-from typing import Optional, Dict, List
+from typing import Dict, List, Optional
 
 from PyYandexLMS.models.base.main import BaseModel
 from PyYandexLMS.models.input import Input
