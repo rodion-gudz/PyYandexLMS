@@ -110,14 +110,10 @@ def test_get_task_information(requests_mock):
 
     for data in json.loads(fake_json):
         requests_mock.get(
-            get_task_information_link(
-                task_id=task.id, group_id=group.id
-            ),
+            get_task_information_link(task_id=task.id, group_id=group.id),
             json=data,
         )
-        assert client.get_task(
-            task_id=task.id, group_id=group.id
-        )
+        assert client.get_task(task_id=task.id, group_id=group.id)
 
 
 def test_notifications(requests_mock):
