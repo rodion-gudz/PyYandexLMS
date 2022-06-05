@@ -1,6 +1,8 @@
+from typing import Optional
+
 from PyYandexLMS.models.base.main import BaseModel
 
 
 class Status(BaseModel):
-    id: int
+    id: Optional[int]
     type: str
