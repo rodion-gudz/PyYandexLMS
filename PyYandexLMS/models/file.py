@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from PyYandexLMS.models.base.main import BaseModel
 
@@ -12,3 +13,4 @@ class File(BaseModel):
     size: int
     run_id: str
     added_time: datetime
+    source_code: Optional[str]
