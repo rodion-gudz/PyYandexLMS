@@ -53,7 +53,7 @@ def get_material_information_link(
 
 
 def get_solution_information_link(solution_id: int) -> str:
-    return f"https://lyceum.yandex.ru/api/student/tasks/{solution_id}"
+    return f"https://lyceum.yandex.ru/api/student/solutions/{solution_id}"
 
 
 def get_problem_detail_link(solution_id: int) -> str:
