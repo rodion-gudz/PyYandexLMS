@@ -11,7 +11,7 @@ from PyYandexLMS.models.user import User
 
 
 class Solution(BaseSolution):
-    deadline: datetime
+    deadline: Union[datetime, None]
     task: BaseTask
     student: User
     has_activity_after_deadline: bool
