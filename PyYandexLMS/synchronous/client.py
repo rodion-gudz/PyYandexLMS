@@ -9,7 +9,7 @@ from PyYandexLMS.models.course import Course
 from PyYandexLMS.models.lesson import BaseLesson, Lesson
 from PyYandexLMS.models.materials import BaseMaterial, MaterialInformation
 from PyYandexLMS.models.notification import NotificationInformation
-from PyYandexLMS.models.problem import ProblemInformation
+from PyYandexLMS.models.problem import ProblemInformation, ProblemSolution
 from PyYandexLMS.models.profile import ProfileInformation
 from PyYandexLMS.models.solution import BaseSolution, SolutionInformation
 from PyYandexLMS.models.task import Task, TaskType
@@ -47,6 +47,16 @@ class Client(Session):
 
     def get(self, *args, **kwargs):
         request = super().get(*args, **kwargs)
+        if request.status_code != 200:
+            request_error = request.json()["code"]
+            raise ApiException(
+                code=int(request_error.split("_")[0]),
+                message=" ".join(request_error.split("_")[1:]),
+            )
+        return request
+
+    def post(self, *args, **kwargs):
+        request = super().post(*args, **kwargs)
         if request.status_code != 200:
             request_error = request.json()["code"]
             raise ApiException(
@@ -287,6 +297,24 @@ class Client(Session):
         if raw:
             return response_json
         return ProblemInformation.parse_obj(response_json)
+
+    def get_problem_solution(
+        self, problem_id: int, raw: bool = False
+    ) -> ProblemSolution:
+        """
+        Возвращает информацию о решении теста.
+
+        :param problem_id: Идентификатор теста
+        :param raw: Вернуть ответ API в виде словаря
+        """
+
+        response_json = self.post(
+            get_problem_solution_link(problem_id=problem_id)
+        ).json()
+
+        if raw:
+            return response_json
+        return ProblemSolution.parse_obj(response_json)
 
     def get_notifications(
         self, is_read: bool = False, raw: bool = False

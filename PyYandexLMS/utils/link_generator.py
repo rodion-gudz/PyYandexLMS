@@ -2,10 +2,10 @@ from urllib.parse import urlencode
 
 
 def get_user_information_link(
-    with_courses_summary: bool = True,
-    with_expelled: bool = True,
-    with_children: bool = True,
-    with_parents: bool = True,
+        with_courses_summary: bool = True,
+        with_expelled: bool = True,
+        with_children: bool = True,
+        with_parents: bool = True,
 ):
     params = {
         "withCoursesSummary": with_courses_summary,
@@ -44,9 +44,9 @@ def get_materials_list_link(lesson_id: int) -> str:
 
 
 def get_material_information_link(
-    material_id: int,
-    group_id: int,
-    lesson_id: int,
+        material_id: int,
+        group_id: int,
+        lesson_id: int,
 ) -> str:
     params = {"groupId": group_id, "lessonId": lesson_id}
     return f"https://lyceum.yandex.ru/api/student/materials/{material_id}?{urlencode(params)}"
@@ -59,6 +59,11 @@ def get_solution_information_link(solution_id: int) -> str:
 def get_problem_detail_link(solution_id: int) -> str:
     params = {"solutionId": solution_id}
     return f"https://lyceum.yandex.ru/api/problem/details?{urlencode(params)}"
+
+
+def get_problem_solution_link(problem_id: int) -> str:
+    params = {"problemLinkId": problem_id}
+    return f"https://lyceum.yandex.ru/api/student/problem/solution?{urlencode(params)}"
 
 
 def get_notifications_link(is_read: bool = False) -> str:
