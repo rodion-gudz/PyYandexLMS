@@ -11,7 +11,7 @@ class Task(BaseTask):
     variant: Variant
     description: str
     compilers_ids: List[int]
-    solution_id: int
+    solution_id: Union[int, None]
     latest_submission: Union[Submission, None]
 
 
