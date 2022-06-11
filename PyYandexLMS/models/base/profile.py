@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from typing import List, Union, Dict
+from typing import Dict, List, Union
 
 from PyYandexLMS.models.user import User
 
