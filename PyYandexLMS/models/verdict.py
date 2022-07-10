@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Union
+from typing import Union, Any
 
 from PyYandexLMS.models.base.main import BaseModel
 from PyYandexLMS.models.file import File
@@ -19,4 +19,4 @@ class Verdict(BaseModel):
     used_time: Union[int, None]
     used_memory: Union[int, None]
     test_number: Union[int, None]
-    is_rejudgement_of_id: Union[bool, None]
+    is_rejudgement_of_id: Union[Any, None]
