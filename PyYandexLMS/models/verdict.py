@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Union, Any
+from typing import Any, Union
 
 from PyYandexLMS.models.base.main import BaseModel
 from PyYandexLMS.models.file import File
