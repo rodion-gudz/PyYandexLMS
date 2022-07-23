@@ -1,8 +1,8 @@
-from typing import Union
+from typing import Union, Any
 
 from PyYandexLMS.models.base.main import BaseModel
 
 
 class Placement(BaseModel):
-    venue: Union[str, None]
-    city: Union[str, None]
+    venue: Union[Any, None]
+    city: Union[Any, None]

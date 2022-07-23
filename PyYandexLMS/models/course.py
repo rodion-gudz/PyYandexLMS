@@ -29,7 +29,7 @@ class Course(BaseModel):
     status: Optional[str]
     events_count: Optional[int]
     visited_attendances_count: Optional[int]
-    schedule_plan: SchedulePlan
+    schedule_plan: Optional[SchedulePlan]
 
 
 class CoursesSummary(BaseModel):
