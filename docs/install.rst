@@ -20,4 +20,4 @@ GitHub
 
 .. code-block:: bash
 
-    pip install git+https://github.com/fast-geek/PyYandexLMS
+    pip install git+https://github.com/rodion-gudz/PyYandexLMS
