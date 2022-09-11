@@ -49,10 +49,14 @@ class Client(Session):
         request = super().get(*args, **kwargs)
         if request.status_code != 200:
             request_error = request.json()["code"]
-            raise ApiException(
-                code=int(request_error.split("_")[0]),
-                message=" ".join(request_error.split("_")[1:]),
-            )
+            try:
+                raise ApiException(
+                    code=int(request_error.split("_")[0]),
+                    message=" ".join(request_error.split("_")[1:]),
+                )
+            except ValueError as e:
+                raise ApiException(code="Unknown", message=request_error) from e
+
         return request
 
     def post(self, *args, **kwargs):
