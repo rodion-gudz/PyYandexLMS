@@ -177,6 +177,7 @@ class Client(Session):
             get_tasks_list_link(
                 lesson_id=lesson_id,
                 course_id=course_id,
+                group_id=group_id,
             )
         ).json()
 
